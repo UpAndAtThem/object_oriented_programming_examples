@@ -3,9 +3,15 @@ class Cat
     @name = name
   end
 
+  def name
+    @name
+  end
+
   def greet
-    puts "hello my name is #{@name}!"
+    "hello my name is #{name}!"
   end
 end
 
 kitty = Cat.new("Sophie")
+
+p kitty.greet
