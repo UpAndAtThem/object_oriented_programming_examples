@@ -1,9 +1,11 @@
-# create an empty class named 'cat'
-
 class Cat
-  def initialize
-    puts "I'm a cat!"
+  def initialize(name)
+    @name = name
+  end
+
+  def greet
+    puts "hello my name is #{@name}!"
   end
 end
 
-kitty = Cat.new
+kitty = Cat.new("Sophie")
