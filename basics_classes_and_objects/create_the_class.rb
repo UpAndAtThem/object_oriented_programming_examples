@@ -1,10 +1,26 @@
-class Cat
-  def initialize(name)
-    @name = name
-  end
+# class Cat
+#   def initialize(name = "unknown")
+#     @name = name
+#   end
 
-  def name
-    @name
+#   def name
+#     @name
+#   end
+
+#   def name=(name)
+#     @name = name
+#   end
+
+#   def greet
+#     "hello my name is #{name}!"
+#   end
+# end
+
+class Cat
+  attr_accessor :name
+
+  def initialize(name = "unknown")
+    @name = name
   end
 
   def greet
@@ -12,6 +28,4 @@ class Cat
   end
 end
 
-kitty = Cat.new("Sophie")
-
-p kitty.greet
+kitty = Cat.new()
