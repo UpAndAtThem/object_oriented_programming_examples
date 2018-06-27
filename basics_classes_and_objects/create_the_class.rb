@@ -1,22 +1,12 @@
-# class Cat
-#   def initialize(name = "unknown")
-#     @name = name
-#   end
-
-#   def name
-#     @name
-#   end
-
-#   def name=(name)
-#     @name = name
-#   end
-
-#   def greet
-#     "hello my name is #{name}!"
-#   end
-# end
+module Walkable
+  def walk
+    puts "Lets go for a walk!"
+  end
+end
 
 class Cat
+  include Walkable
+
   attr_accessor :name
 
   def initialize(name = "unknown")
@@ -28,4 +18,6 @@ class Cat
   end
 end
 
-kitty = Cat.new()
+kitty = Cat.new("Zanzabar")
+
+kitty.walk
