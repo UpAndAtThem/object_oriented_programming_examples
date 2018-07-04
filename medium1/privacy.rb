@@ -8,16 +8,16 @@ class Machine
   end
 
   def start
-    self.flip_switch(:on)
+    flip_switch(:on)
   end
 
   def stop
-    self.flip_switch(:off)
+    flip_switch(:off)
   end
 
   def toggle
     opposite = self.switch == :on ? :off : :on
-    @switch = flip_switch(opposite)
+    flip_switch(opposite)
   end
 
   private
@@ -28,5 +28,12 @@ class Machine
     self.switch = desired_state
   end
 end
+
+blender = Machine.new(:on)
+
+blender.stop
+p blender
+blender.start
+p blender
 
 #Modify this class so both flip_switch and the setter method switch= are private methods.
