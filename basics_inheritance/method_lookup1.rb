@@ -20,6 +20,3 @@ p cat1.color
 
 # Cat
 # Animal
-# Object
-# Kernel
-# BasicObject
