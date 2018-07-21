@@ -16,7 +16,7 @@ class Person
 end
 
 class GeoLocation
-  attr_reader :latitude, :longitude
+  attr_reader :latitude, :longitude, :coordinates
 
   def initialize(latitude, longitude)
     @latitude = latitude
@@ -32,7 +32,7 @@ class GeoLocation
   end
 
   def ==(other_location)
-    self.coordinates == other_location.coordinates
+    coordinates == other_location.coordinates
   end
 end
 
