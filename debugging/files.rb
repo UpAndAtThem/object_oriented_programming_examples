@@ -20,7 +20,7 @@ class File
   end
 
   def to_s
-    "#{name}.#{MarkdownFile::FORMAT}"
+    "#{name}.#{self.class::FORMAT}"
   end
 end
 
