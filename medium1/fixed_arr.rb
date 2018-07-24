@@ -22,7 +22,7 @@ class FixedArray
   end
 
   def to_a
-    @array
+    @array.clone
   end
 
   def to_s
