@@ -53,8 +53,6 @@
 
 class CircularQueue
 
-  attr_reader :queue, :queue_max
-
   def initialize(queue_max)
     @queue = []
     @queue_max = queue_max
@@ -66,13 +64,17 @@ class CircularQueue
     @queue.shift
   end
 
-  def full?
-    queue.length == queue_max
-  end
-
   def enqueue(object)
     dequeue if full?
     @queue << object
+  end
+
+  protected
+
+  attr_reader :queue, :queue_max
+
+  def full?
+    queue.length == queue_max
   end
 end
 
