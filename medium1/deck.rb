@@ -37,10 +37,11 @@ class Deck
   attr_reader :cards
 
   def initialize
-    @cards = create_deck
+    reset
   end
 
   def draw
+    reset if @cards.empty?
     cards.pop
   end
 
@@ -54,7 +55,7 @@ class Deck
     cards <=> other_deck.cards.shuffle
   end
 
-  def create_deck
+  def reset
     cards = []
 
     RANKS.each do |rank|
@@ -63,9 +64,7 @@ class Deck
       end
     end
 
-    cards
+    @cards = cards
   end
 end
 
-
-p Deck.new == Deck.new
