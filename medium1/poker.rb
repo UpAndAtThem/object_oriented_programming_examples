@@ -121,6 +121,7 @@ class PokerHand
   end
 
   def flush?
+    @hand.map { |card| card.suit}.uniq.size == 1
   end
 
   def straight?
@@ -153,7 +154,7 @@ binding.pry
 #   Card.new('King',  'Hearts'),
 #   Card.new('Jack',  'Hearts')
 # ])
-# puts hand.evaluate == 'Royal flush'
+puts hand.evaluate == 'Royal flush'
 
 # hand = PokerHand.new([
 #   Card.new(8,       'Clubs'),
