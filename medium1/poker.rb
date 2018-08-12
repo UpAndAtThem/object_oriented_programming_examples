@@ -15,8 +15,6 @@ class Card
   attr_reader :rank, :suit
   include Comparable
 
-  FACE_ORDER = [2, 3, 4, 5, 6, 7, 8, 9 , 10, 'Jack', 'Queen', 'King', 'Ace'].zip((2..14)).to_h
-
   def initialize(rank, suit)
     @rank = rank
     @suit = suit
@@ -78,6 +76,8 @@ class Deck
 end
 
 class PokerHand
+  FACE_ORDER = [2, 3, 4, 5, 6, 7, 8, 9 , 10, 'Jack', 'Queen', 'King', 'Ace'].zip((2..14)).to_h
+
   def initialize(deck)
     @hand = deal(deck)
   end
@@ -125,6 +125,9 @@ class PokerHand
   end
 
   def straight?
+    binding.pry
+    arr = @hand.map { |card| FACE_ORDER[card.rank]}.sort
+    arr == (arr[0]..arr[-1]).to_a
   end
 
   def three_of_a_kind?
