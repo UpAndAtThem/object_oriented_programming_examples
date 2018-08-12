@@ -1,12 +1,3 @@
-# In the previous two exercises, you developed a Card class and a Deck class. 
-# You are now going to use those classes to create and evaluate poker hands. 
-# Create a class, PokerHand, that takes 5 cards from a Deck of Cards and evaluates those cards as a Poker hand.
-
-# You should build your class using the following code skeleton:
-
-# Include Card and Deck classes from the last two exercises.
-require 'pry'
-
 class Array
   alias_method :draw, :pop
 end
@@ -20,8 +11,8 @@ class Card
     @suit = suit
   end
 
-  def ==(other_card)
-    rank == other_card.rank
+  def ==(other)
+    rank == other.rank
   end
 
   def to_s
@@ -30,8 +21,8 @@ class Card
 
   protected
 
-  def <=>(other_card)
-    PokerHand::FACE_ORDER[rank] <=> PokerHand::FACE_ORDER[other_card.rank]
+  def <=>(other)
+    PokerHand::FACE_ORDER[rank] <=> PokerHand::FACE_ORDER[other.rank]
   end
 end
 
@@ -58,8 +49,8 @@ class Deck
 
   protected
 
-  def <=>(other_deck)
-    cards <=> other_deck.cards.shuffle
+  def <=>(other)
+    cards <=> other.cards.shuffle
   end
 
   def reset
@@ -85,7 +76,7 @@ class PokerHand
   end
 
   def print
-    self.hand.each do |card|
+    hand.each do |card|
       puts card
     end
   end
@@ -108,7 +99,7 @@ class PokerHand
   private
 
   def royal_flush?
-    arr = @hand.map { |card| FACE_ORDER[card.rank]}.sort
+    arr = @hand.map { |card| FACE_ORDER[card.rank] }.sort
     flush? && arr == [10, 11, 12, 13, 14]
   end
 
@@ -117,7 +108,7 @@ class PokerHand
   end
 
   def four_of_a_kind?
-    grouped = @hand.group_by { |card| card.rank}
+    grouped = @hand.group_by(&:rank)
     grouped.values.sort.first.count == 4
   end
 
@@ -126,40 +117,26 @@ class PokerHand
   end
 
   def flush?
-    @hand.map { |card| card.suit}.uniq.size == 1
+    @hand.map(&:suit).uniq.size == 1
   end
 
   def straight?
-    arr = @hand.map { |card| FACE_ORDER[card.rank]}.sort
+    arr = @hand.map { |card| FACE_ORDER[card.rank] }.sort
     arr == (arr[0]..arr[-1]).to_a
   end
 
   def three_of_a_kind?
-    grouped = @hand.group_by { |card| card.rank}
+    grouped = @hand.group_by(&:rank)
     grouped.values.sort.first.count == 3
   end
 
   def two_pair?
-    grouped = @hand.group_by { |card| card.rank}
+    grouped = @hand.group_by(&:rank)
     grouped.values.sort.first.count == 2 && grouped.values.count == 3
   end
 
   def pair?
-    grouped = @hand.group_by { |card| card.rank}
+    grouped = @hand.group_by(&:rank)
     grouped.values.max.count == 2
   end
 end
-
-# Testing your class:
-
-hand = PokerHand.new([
-  Card.new(10,      'Hearts'),
-  Card.new('Ace',   'Hearts'),
-  Card.new('Queen', 'Hearts'),
-  Card.new('King',  'Hearts'),
-  Card.new('Jack',  'Hearts')
-])
-hand.print
-puts hand.evaluate
-
-binding.pry
