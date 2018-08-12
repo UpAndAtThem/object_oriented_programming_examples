@@ -78,8 +78,16 @@ end
 class PokerHand
   FACE_ORDER = [2, 3, 4, 5, 6, 7, 8, 9 , 10, 'Jack', 'Queen', 'King', 'Ace'].zip((2..14)).to_h
 
+  attr_reader :hand
+
   def initialize(deck)
-    @hand = deal(deck)
+
+    @hand = [
+              Card.new(8,       'Clubs'),
+              Card.new(8,       'diamonds'),
+              Card.new('Queen', 'Clubs'),
+              Card.new(8,      'hearts'),
+              Card.new('Jack',  'Clubs')]
   end
 
   def deal(deck)
@@ -112,6 +120,7 @@ class PokerHand
   end
 
   def straight_flush?
+    straight? && flush? unless royal_flush?
   end
 
   def four_of_a_kind?
@@ -125,12 +134,13 @@ class PokerHand
   end
 
   def straight?
-    binding.pry
     arr = @hand.map { |card| FACE_ORDER[card.rank]}.sort
     arr == (arr[0]..arr[-1]).to_a
   end
 
   def three_of_a_kind?
+    grouped = @hand.group_by { |card| card.rank}
+    grouped.values.first.count == 3
   end
 
   def two_pair?
@@ -142,7 +152,6 @@ end
 # Testing your class:
 
 hand = PokerHand.new(Deck.new)
-binding.pry
 # hand.print
 # puts hand.evaluate
 
@@ -157,7 +166,7 @@ binding.pry
 #   Card.new('King',  'Hearts'),
 #   Card.new('Jack',  'Hearts')
 # ])
-puts hand.evaluate == 'Royal flush'
+#puts hand.evaluate == 'Royal flush'
 
 # hand = PokerHand.new([
 #   Card.new(8,       'Clubs'),
@@ -166,7 +175,8 @@ puts hand.evaluate == 'Royal flush'
 #   Card.new(10,      'Clubs'),
 #   Card.new('Jack',  'Clubs')
 # ])
-# puts hand.evaluate == 'Straight flush'
+puts hand#.evaluate == 'Straight flush'
+binding.pry
 
 # hand = PokerHand.new([
 #   Card.new(3, 'Hearts'),
