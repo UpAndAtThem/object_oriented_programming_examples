@@ -85,7 +85,7 @@ class PokerHand
     @hand = [
               Card.new(8,       'Clubs'),
               Card.new(8,       'diamonds'),
-              Card.new('Queen', 'Clubs'),
+              Card.new(6, 'Clubs'),
               Card.new(6,      'hearts'),
               Card.new('Jack',  'Clubs')]
   end
@@ -144,10 +144,11 @@ class PokerHand
   end
 
   def two_pair?
+    grouped = @hand.group_by { |card| card.rank}
+    grouped.values.first.count == 2 && grouped.values.count == 3
   end
 
   def pair?
-    binding.pry
     grouped = @hand.group_by { |card| card.rank}
     grouped.values.first.count == 2 && grouped.values.count == 4
   end
@@ -178,7 +179,7 @@ hand = PokerHand.new(Deck.new)
 #   Card.new(10,      'Clubs'),
 #   Card.new('Jack',  'Clubs')
 # ])
-puts hand.evaluate == 'Pair'
+puts hand.evaluate == 'Two pair'
 
 
 # hand = PokerHand.new([
