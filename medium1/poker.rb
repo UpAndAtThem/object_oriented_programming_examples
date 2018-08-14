@@ -1,7 +1,3 @@
-class Array
-  alias_method :draw, :pop
-end
-
 class Card
   attr_reader :rank, :suit
   include Comparable
@@ -11,6 +7,8 @@ class Card
     @suit = suit
   end
 
+  protected
+
   def ==(other)
     rank == other.rank
   end
@@ -18,8 +16,6 @@ class Card
   def to_s
     "#{rank} of #{suit}"
   end
-
-  protected
 
   def <=>(other)
     PokerHand::FACE_ORDER[rank] <=> PokerHand::FACE_ORDER[other.rank]
@@ -40,11 +36,15 @@ class Deck
 
   def draw
     reset if @cards.empty?
-    cards.draw
+    cards.pop
   end
 
   def count
     cards.size
+  end
+
+  def deal
+    5.times.with_object([]) { |_, array| array <<  cards.sample}
   end
 
   protected
@@ -137,6 +137,23 @@ class PokerHand
 
   def pair?
     grouped = @hand.group_by(&:rank)
-    grouped.values.max.count == 2
+    grouped.values.any? { |grouping| grouping.size == 2 }
+  end
+end
+
+count = 0
+
+loop do
+  cards = Deck.new
+  cards = PokerHand.new(cards.deal)
+  
+  unless ["Straight flush"].include? cards.evaluate
+    count += 1
+  end
+
+  if ["Straight flush"].include? cards.evaluate
+    puts count
+    cards.print
+    puts cards.evaluate
   end
 end
