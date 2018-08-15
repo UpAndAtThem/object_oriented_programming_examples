@@ -1,3 +1,4 @@
+require 'pry'
 class Card
   attr_reader :rank, :suit
   include Comparable
@@ -97,6 +98,41 @@ class PokerHand
     end
   end
 
+  def self.occur_percentage(hand)
+    occurances_needed = 15
+    iterations = 0
+    count = 0
+    num_occur = 0
+    result = []
+
+    loop do
+      loop do
+        cards = Deck.new
+        dealt_cards = PokerHand.new(cards.deal) 
+        count += 1
+
+        if [hand].include? dealt_cards.evaluate
+          count += 1
+          num_occur += 1
+          puts "-------------"
+          puts "TOTAL NUMBER TIMES #{hand.upcase} DEALT: #{num_occur}"
+          puts "TOTAL NUMBER HANDS DEALT: #{count}"
+          puts "HAND OCCURANCE PERCENTAGE: %#{(num_occur/count.to_f) * 100}\n\n"
+          dealt_cards.print
+        end
+
+        break if num_occur == occurances_needed
+      end
+
+      puts "\n\n1 out of #{count.to_f/num_occur} hands will be dealt a #{hand}\n\n"
+      result << count
+      iterations += 1
+      num_occur = 0
+      count = 0
+      break if iterations == 5
+    end
+  end
+
   private
 
   def royal_flush?
@@ -141,33 +177,5 @@ class PokerHand
     grouped.values.any? { |grouping| grouping.size == 2 }
   end
 end
-iterations = 0
-count = 0
-num_occur = 0
-result = []
 
-loop do
-  loop do
-    cards = Deck.new
-    cards = PokerHand.new(cards.deal)
-    
-    unless ["Four of a kind"].include? cards.evaluate
-      count += 1
-    end
-  
-    if ["Four of a kind"].include? cards.evaluate
-      puts num_occur += 1
-      puts count
-      cards.print
-    end
-    
-    break if num_occur == 20
-  end
-  result << count
-  iterations += 1
-  num_occur = 0
-  count = 0
-  break if iterations == 5
-end
-
-p result
+PokerHand.occur_percentage("Straight flush")
