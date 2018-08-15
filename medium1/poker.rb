@@ -44,7 +44,8 @@ class Deck
   end
 
   def deal
-    5.times.with_object([]) { |_, array| array <<  cards.sample}
+    cards.shuffle!
+    5.times.with_object([]) { |_, array| array << cards.pop}
   end
 
   protected
@@ -140,20 +141,33 @@ class PokerHand
     grouped.values.any? { |grouping| grouping.size == 2 }
   end
 end
-
+iterations = 0
 count = 0
+num_occur = 0
+result = []
 
 loop do
-  cards = Deck.new
-  cards = PokerHand.new(cards.deal)
+  loop do
+    cards = Deck.new
+    cards = PokerHand.new(cards.deal)
+    
+    unless ["Four of a kind"].include? cards.evaluate
+      count += 1
+    end
   
-  unless ["Straight flush"].include? cards.evaluate
-    count += 1
+    if ["Four of a kind"].include? cards.evaluate
+      puts num_occur += 1
+      puts count
+      cards.print
+    end
+    
+    break if num_occur == 20
   end
-
-  if ["Straight flush"].include? cards.evaluate
-    puts count
-    cards.print
-    puts cards.evaluate
-  end
+  result << count
+  iterations += 1
+  num_occur = 0
+  count = 0
+  break if iterations == 5
 end
+
+p result
