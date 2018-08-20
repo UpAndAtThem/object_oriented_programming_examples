@@ -194,6 +194,8 @@ class Odds
   end
 
   def percentage
+    @percentages = []
+
     loop do
       loop do
         deck = Deck.new
@@ -206,20 +208,21 @@ class Odds
       end
 
       @percentage = (@total_occurances/@count.to_f) * 100
-
+      @percentages << @percentage
       @total_occurances = 0
       @count = 0
 
       @iterations += 1
       break if @iterations == 15
     end
-    @percentage
+
+    @percentages.reduce(&:+) / @percentages.size
   end
 end
 
 deck = Deck.new.shuffle
 
-odds_instance = Odds.new("Flush", 10)
+odds_instance = Odds.new("Two pair", 10)
 
-p odds_instance.percentage
+odds_instance.percentage
 
