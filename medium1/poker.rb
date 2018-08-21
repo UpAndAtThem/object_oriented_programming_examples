@@ -1,5 +1,3 @@
-require 'pry'
-
 class Card
   attr_reader :rank, :suit
   include Comparable
@@ -185,6 +183,9 @@ class PokerHand
 end
 
 class Odds
+
+  attr_accessor :hand, :count, :total_occurances, :set_percentage, :iterations, :hand_name, :occurances_needed
+
   def initialize(hand_name, occurances_needed)
     @hand_name = hand_name
     @occurances_needed = occurances_needed
@@ -194,35 +195,36 @@ class Odds
   end
 
   def percentage
-    @percentages = []
+    percentages = []
 
     loop do
       loop do
         deck = Deck.new
-        @hand = PokerHand.new(deck.deal) 
-        @count += 1
+        self.hand = PokerHand.new(deck.deal) 
+        self.count += 1
 
-        @total_occurances += 1 if [@hand_name].include? @hand.evaluate
+        self.total_occurances += 1 if [hand_name].include? hand.evaluate
 
-        break if @total_occurances == @occurances_needed
+        break if total_occurances == occurances_needed
       end
 
-      @percentage = (@total_occurances/@count.to_f) * 100
-      @percentages << @percentage
-      @total_occurances = 0
-      @count = 0
+      self.set_percentage = (total_occurances/count.to_f) * 100
+      percentages << self.set_percentage
 
-      @iterations += 1
-      break if @iterations == 15
+      self.total_occurances = 0
+      self.count = 0
+
+      self.iterations += 1
+      break if iterations == 15
     end
 
-    @percentages.reduce(&:+) / @percentages.size
+    percentages.reduce(&:+) / percentages.size
   end
 end
 
 deck = Deck.new.shuffle
 
-odds_instance = Odds.new("Two pair", 10)
+odds_instance = Odds.new("High card", 10)
 
-odds_instance.percentage
+p odds_instance.percentage
 
