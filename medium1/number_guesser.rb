@@ -29,15 +29,22 @@ require 'pry'
 
 class GuessingGame
 
-  MIN = 1
-  MAX = 100
+  attr_reader :guesses_remaining, :start_range, :end_range
 
-  attr_reader :guesses_remaining
-
-  def initialize
+  def initialize(start_range, end_range)
     @computer_choice = rand(100) + 1
-    @guesses_remaining = 7
+    @start_range = start_range
+    @end_range = end_range
+    @guesses_remaining = Math.log2(size_of_range).to_i + 1
     @winner = false
+  end
+
+  def size_of_range
+    end_range - start_range
+  end
+
+  def generate_num_guesses(range)
+    Math.log2(size_of_range).to_i + 1
   end
 
   def invalid_guess_message
@@ -53,7 +60,7 @@ class GuessingGame
   end
 
   def player_guess
-    print "Enter a number between #{MIN} and #{MAX}: "
+    print "Enter a number between #{start_range} and #{end_range}: "
 
     loop do
       guess = gets.chomp.to_i
@@ -106,7 +113,7 @@ class GuessingGame
   end
 end
 
-game = GuessingGame.new
+game = GuessingGame.new(500, 7000)
 game.play
 
 # You have 7 guesses remaining.
@@ -129,8 +136,6 @@ game.play
 # You have 3 guesses remaining.
 # Enter a number between 1 and 100: 81
 # You win!
-
-
 
 # You have 7 guesses remaining.
 # Enter a number between 1 and 100: 50
